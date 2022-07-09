@@ -12,14 +12,7 @@ import {WebView} from 'react-native-webview';
 // }
 
 const WebviewDemo = ()=>{
-  const webRef = useRef();
-  const runFirst = `
-    setTimeout(function(){
-      window.alert('Click me');
-      document.getElementById('h2_element').innerHTML = 'Hello';
-    }, 1000);
-  `;
-
+  const webRef = useRef();  
   const run = `
     document.getElementById('h2_element').innerHTML = 'World';
   `;
@@ -36,10 +29,18 @@ const WebviewDemo = ()=>{
           text-align: center;" id="h2_element">
             This text will be changed later!
           </h2>
-  </body>`;
+        <script>
+          setTimeout(function() {
+            window.ReactNativeWebView.postMessage('from Webview');
+          }, 2000)
+        </script>
+  </body>
+  `;
 
   return (
-    <WebView ref={webRef} source={{html: customHtml}} injectedJavaScript={runFirst}/>
+    <WebView ref={webRef} source={{html: customHtml}} onMessage={(event)=>{
+      console.log(event.nativeEvent.data);
+    }}/>
   )
 }
 
