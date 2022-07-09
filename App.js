@@ -1,13 +1,39 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 
+// const WebviewDemo = ()=>{
+//   return (
+//     <WebView source={{uri: "https://hackernews.com"}} style={{marginTop: 20}} containerStyle={{padding: 10}} />
+//   )
+// }
+
 const WebviewDemo = ()=>{
+
+  const [currentProgress, setCurrentProgress] = useState(0);
+
+  const onLoad = ()=>{
+    console.log("onLoad done");
+  }
+
+  const onLoadStart = ()=>{
+    console.log("onLoadStart done");
+  }
+
+  const onLoadProgress=(syntheticEvent)=>{
+    const {nativeEvent} = syntheticEvent;
+    setCurrentProgress(nativeEvent.progress);
+  }
   return (
-    <WebView source={{uri: "https://hackernews.com"}} style={{marginTop: 20}} containerStyle={{padding: 10}} />
+    <>
+    <WebView source={{uri: "https://hackernews.com"}} onLoadStart={onLoadStart} onLoad={onLoad} 
+    onLoadProgress={onLoadProgress}
+    />
+    <Text style={{color: 'green', textAlign: 'center', fontSize: 20}}>Webview progress {currentProgress}</Text>
+    </>
   )
 }
 
